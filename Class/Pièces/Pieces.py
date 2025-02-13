@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
 
 class Piece(ABC):
-    @abstractmethod
-    def move(self, start_pos, end_pos):
-        pass
+    def __init__(self, color):
+        self.color = color
 
     @abstractmethod
     def getPossibleMoves(self, position):
