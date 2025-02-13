@@ -1,11 +1,14 @@
+import pandas as pd
 class Board:
     def __init__(self):
-        matrice = self.buildBoard()
+        self.matrice = self.createBoard()
     
     def createBoard(self):
-        self.matrice = []
+        grille = {}
+        listeLettreColonnes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+        listeNumeroLignes = ['1', '2', '3', '4', '5', '6', '7', '8']
         for i in range(8):
-            self.matrice.append([])
-            for j in range(8):
-                self.matrice[i].append(' ')
-        return self.matrice
+            grille[listeLettreColonnes[i]] = [' ' for _ in range(8)]
+        
+        return pd.DataFrame(grille, index=listeNumeroLignes)    
+    
