@@ -8,7 +8,7 @@ class Board:
         listeLettreColonnes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
         listeNumeroLignes = ['1', '2', '3', '4', '5', '6', '7', '8']
         for i in range(8):
-            grille[listeLettreColonnes[i]] = [' ' for _ in range(8)]
+            grille[listeLettreColonnes[i]] = [None for _ in range(8)]
         
         return pd.DataFrame(grille, index=listeNumeroLignes)    
     
