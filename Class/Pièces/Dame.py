@@ -1,4 +1,4 @@
-from Pièces.Pieces import Piece
+from Class.Pièces.Pieces import Piece
 
 class Dame(Piece):
     def __init__(self, color):

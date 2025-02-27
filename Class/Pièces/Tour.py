@@ -1,4 +1,4 @@
-from Pièces.Pieces import Piece
+from Class.Pièces.Pieces import Piece
 
 class Tour(Piece):
     def __init__(self, color):
