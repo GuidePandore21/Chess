@@ -41,3 +41,43 @@ class Board:
         
         self.matrice.loc['E', '1'] = Roi("blanc")
         self.matrice.loc['E', '8'] = Roi("noir")
+    
+    def coupPossibleCavalier(self, piece, position):
+        deplacements = piece.getPossibleMoves(position)
+        coups = []
+        for deplacement in deplacements:
+            if self.matrice.loc[deplacement[0], deplacement[1]] is None:
+                coups.append(deplacement)
+            elif self.matrice.loc[deplacement[0], deplacement[1]].color != piece.color:
+                coups.append(deplacement)
+        return coups
+            
+    def coupPossibleFou(self, piece, position):
+        for direction in [(1, 1), (1, -1), (-1, 1), (-1, -1)]:
+            for i in range(1, 8):
+                x = ord(position[0]) + i * direction[0]
+                y = int(position[1]) + i * direction[1]
+                if chr(x) in self.listeLettreColonnes and str(y) in self.listeNumeroLignes:
+                    if self.matrice.loc[chr(x), str(y)] is None:
+                        print(chr(x), str(y))
+                    elif self.matrice.loc[chr(x), str(y)].color != piece.color:
+                        print(chr(x), str(y))
+                    else:
+                        break
+                else:
+                    break
+    
+    def coupPossibleTour(self, piece, position):
+        for direction in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            for i in range(1, 8):
+                x = ord(position[0]) + i * direction[0]
+                y = int(position[1]) + i * direction[1]
+                if chr(x) in self.listeLettreColonnes and str(y) in self.listeNumeroLignes:
+                    if self.matrice.loc[chr(x), str(y)] is None:
+                        print(chr(x), str(y))
+                    elif self.matrice.loc[chr(x), str(y)].color != piece.color:
+                        print(chr(x), str(y))
+                    else:
+                        break
+                else:
+                    break
