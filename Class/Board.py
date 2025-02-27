@@ -66,3 +66,18 @@ class Board:
                         break
                 else:
                     break
+    
+    def coupPossibleTour(self, piece, position):
+        for direction in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            for i in range(1, 8):
+                x = ord(position[0]) + i * direction[0]
+                y = int(position[1]) + i * direction[1]
+                if chr(x) in self.listeLettreColonnes and str(y) in self.listeNumeroLignes:
+                    if self.matrice.loc[chr(x), str(y)] is None:
+                        print(chr(x), str(y))
+                    elif self.matrice.loc[chr(x), str(y)].color != piece.color:
+                        print(chr(x), str(y))
+                    else:
+                        break
+                else:
+                    break
