@@ -44,52 +44,56 @@ class Board:
     
     def coupPossibleCavalier(self, piece, position):
         deplacements = piece.getPossibleMoves(position)
-        coups = []
+        listeCoups = []
         for deplacement in deplacements:
             if self.matrice.loc[deplacement[0], deplacement[1]] is None:
-                coups.append(deplacement)
+                listeCoups.append(deplacement)
             elif self.matrice.loc[deplacement[0], deplacement[1]].color != piece.color:
-                coups.append(deplacement)
-        return coups
+                listeCoups.append(deplacement)
+        return listeCoups
     
     def coupPossibleFou(self, piece, position):
+        listeCoups = []
         for direction in [(1, 1), (1, -1), (-1, 1), (-1, -1)]:
             for i in range(1, 8):
                 x = ord(position[0]) + i * direction[0]
                 y = int(position[1]) + i * direction[1]
                 if chr(x) in self.listeLettreColonnes and str(y) in self.listeNumeroLignes:
                     if self.matrice.loc[chr(x), str(y)] is None:
-                        print(chr(x), str(y))
+                        listeCoups.append([chr(x), str(y)])
                     elif self.matrice.loc[chr(x), str(y)].color != piece.color:
-                        print(chr(x), str(y))
+                        listeCoups.append([chr(x), str(y)])
                     else:
-                        break
+                        return listeCoups
                 else:
-                    break
+                    return listeCoups
+        return listeCoups
     
     def coupPossibleTour(self, piece, position):
+        listeCoups = []
         for direction in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
             for i in range(1, 8):
                 x = ord(position[0]) + i * direction[0]
                 y = int(position[1]) + i * direction[1]
                 if chr(x) in self.listeLettreColonnes and str(y) in self.listeNumeroLignes:
                     if self.matrice.loc[chr(x), str(y)] is None:
-                        print(chr(x), str(y))
+                        listeCoups.append([chr(x), str(y)])
                     elif self.matrice.loc[chr(x), str(y)].color != piece.color:
-                        print(chr(x), str(y))
+                        listeCoups.append([chr(x), str(y)])
                     else:
-                        break
+                        return listeCoups
                 else:
-                    break
+                    return listeCoups
+        return listeCoups
     
     def coupPossiblePion(self, piece, position):
         deplacements = piece.getPossibleMoves(position)
-        coups = []
+        listeCoups = []
         for deplacement in deplacements:
             if self.matrice.loc[deplacement[0], deplacement[1]] is None:
-                coups.append(deplacement)
+                listeCoups.append(deplacement)
             elif self.matrice.loc[deplacement[0], deplacement[1]].color != piece.color:
-                coups.append(deplacement)
+                listeCoups.append(deplacement)
                 
         # Attaque en diagonale
         if piece.color == "blanc":
@@ -97,22 +101,58 @@ class Board:
             y = int(position[1]) + 1
             if chr(x) in self.listeLettreColonnes and str(y) in self.listeNumeroLignes:
                 if self.matrice.loc[chr(x), str(y)] is not None and self.matrice.loc[chr(x), str(y)].color != piece.color:
-                    coups.append((chr(x), str(y)))
+                    listeCoups.append([(chr(x), str(y))])
             x = ord(position[0]) - 1
             y = int(position[1]) + 1
             if chr(x) in self.listeLettreColonnes and str(y) in self.listeNumeroLignes:
                 if self.matrice.loc[chr(x), str(y)] is not None and self.matrice.loc[chr(x), str(y)].color != piece.color:
-                    coups.append((chr(x), str(y)))
+                    listeCoups.append([(chr(x), str(y))])
         else:
             x = ord(position[0]) + 1
             y = int(position[1]) - 1
             if chr(x) in self.listeLettreColonnes and str(y) in self.listeNumeroLignes:
                 if self.matrice.loc[chr(x), str(y)] is not None and self.matrice.loc[chr(x), str(y)].color != piece.color:
-                    coups.append((chr(x), str(y)))
+                    listeCoups.append([(chr(x), str(y))])
             x = ord(position[0]) - 1
             y = int(position[1]) - 1
             if chr(x) in self.listeLettreColonnes and str(y) in self.listeNumeroLignes:
                 if self.matrice.loc[chr(x), str(y)] is not None and self.matrice.loc[chr(x), str(y)].color != piece.color:
-                    coups.append((chr(x), str(y)))
+                    listeCoups.append([(chr(x), str(y))])
         
-        return coups
+        return listeCoups
+    
+    def coupPossibleRoi(self, piece, position):
+        listeCoups = []
+        couleurAdverse = "noir" if piece.color == "blanc" else "blanc"        
+        for direction in [(1, 1), (1, -1), (-1, 1), (-1, -1), (1, 0), (-1, 0), (0, 1), (0, -1)]:
+            x = ord(position[0]) + direction[0]
+            y = int(position[1]) + direction[1]
+            if [x, y] not in self.touslesCoupsPossibles(couleurAdverse):
+                if chr(x) in self.listeLettreColonnes and str(y) in self.listeNumeroLignes:
+                    if self.matrice.loc[chr(x), str(y)] is None:
+                        listeCoups.append([chr(x), str(y)])
+                    elif self.matrice.loc[chr(x), str(y)].color != piece.color:
+                        listeCoups.append([chr(x), str(y)])
+        return listeCoups
+
+    def tousLesCoupsPossibles(self, couleur):
+        listeCoups = []
+        for col in self.listeNumeroLignes:
+            for row in self.listeLettreColonnes:
+                piece = self.matrice.loc[row, col]
+                if piece and piece.color == couleur:
+                    if isinstance(piece, Pion):
+                        listeCoups.append(self.coupPossiblePion(piece, [row, col]))
+                    elif isinstance(piece, Cavalier):
+                        listeCoups.append(self.coupPossibleCavalier(piece, [row, col]))
+                    elif isinstance(piece, Fou):
+                        listeCoups.append(self.coupPossibleFou(piece, [row, col]))
+                    elif isinstance(piece, Tour):
+                        listeCoups.append(self.coupPossibleTour(piece, [row, col]))
+                    elif isinstance(piece, Dame):
+                        listeCoups.append(self.coupPossibleFou(piece, [row, col]))
+                        listeCoups.append(self.coupPossibleTour(piece, [row, col]))
+                    elif isinstance(piece, Roi):
+                        listeCoups.append(self.coupPossibleRoi(piece, [row, col]))
+        return listeCoups
+        
