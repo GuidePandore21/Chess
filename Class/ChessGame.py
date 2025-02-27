@@ -1,12 +1,6 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 from Class.Board import Board
-from Class.Pièces.Cavalier import Cavalier
-from Class.Pièces.Fou import Fou
-from Class.Pièces.Pion import Pion
-from Class.Pièces.Dame import Dame
-from Class.Pièces.Roi import Roi
-from Class.Pièces.Tour import Tour
 
 class ChessGame:
     def __init__(self, squareSize):
@@ -23,7 +17,7 @@ class ChessGame:
         
         self.load_images()
         self.createChessboardInterface()
-        self.placementPiecesInitiales()
+        self.board.placementPiecesInitiales()
         self.displayPieces()
 
     def load_images(self):
@@ -63,32 +57,6 @@ class ChessGame:
                 y2 = y1 + self.square_size
                 color = colors[(row + col) % 2]
                 self.canvas.create_rectangle(x1, y1, x2, y2, fill=color)
-
-    def placementPiecesInitiales(self):
-        for col in self.board.listeLettreColonnes:
-            self.board.matrice.loc[col, '2'] = Pion("blanc")
-            self.board.matrice.loc[col, '7'] = Pion("noir")
-
-        self.board.matrice.loc['A', '1'] = Tour("blanc")
-        self.board.matrice.loc['H', '1'] = Tour("blanc")
-        self.board.matrice.loc['A', '8'] = Tour("noir")
-        self.board.matrice.loc['H', '8'] = Tour("noir")
-        
-        self.board.matrice.loc['B', '1'] = Cavalier("blanc")
-        self.board.matrice.loc['G', '1'] = Cavalier("blanc")
-        self.board.matrice.loc['B', '8'] = Cavalier("noir")
-        self.board.matrice.loc['G', '8'] = Cavalier("noir")
-        
-        self.board.matrice.loc['C', '1'] = Fou("blanc")
-        self.board.matrice.loc['F', '1'] = Fou("blanc")
-        self.board.matrice.loc['C', '8'] = Fou("noir")
-        self.board.matrice.loc['F', '8'] = Fou("noir")
-        
-        self.board.matrice.loc['D', '1'] = Dame("blanc")
-        self.board.matrice.loc['D', '8'] = Dame("noir")
-        
-        self.board.matrice.loc['E', '1'] = Roi("blanc")
-        self.board.matrice.loc['E', '8'] = Roi("noir")
 
     def run(self):
         self.window.mainloop()
