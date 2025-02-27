@@ -15,3 +15,4 @@ class Pion(Piece):
             if self.isFirstMove:
                 listeCoups.append((position[0], str(int(position[1]) - 2)))
             listeCoups.append((position[0], str(int(position[1]) - 1)))
+        return listeCoups

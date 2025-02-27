@@ -81,3 +81,38 @@ class Board:
                         break
                 else:
                     break
+    
+    def coupPossiblePion(self, piece, position):
+        deplacements = piece.getPossibleMoves(position)
+        coups = []
+        for deplacement in deplacements:
+            if self.matrice.loc[deplacement[0], deplacement[1]] is None:
+                coups.append(deplacement)
+            elif self.matrice.loc[deplacement[0], deplacement[1]].color != piece.color:
+                coups.append(deplacement)
+                
+        # Attaque en diagonale
+        if piece.color == "blanc":
+            x = ord(position[0]) + 1
+            y = int(position[1]) + 1
+            if chr(x) in self.listeLettreColonnes and str(y) in self.listeNumeroLignes:
+                if self.matrice.loc[chr(x), str(y)] is not None and self.matrice.loc[chr(x), str(y)].color != piece.color:
+                    coups.append((chr(x), str(y)))
+            x = ord(position[0]) - 1
+            y = int(position[1]) + 1
+            if chr(x) in self.listeLettreColonnes and str(y) in self.listeNumeroLignes:
+                if self.matrice.loc[chr(x), str(y)] is not None and self.matrice.loc[chr(x), str(y)].color != piece.color:
+                    coups.append((chr(x), str(y)))
+        else:
+            x = ord(position[0]) + 1
+            y = int(position[1]) - 1
+            if chr(x) in self.listeLettreColonnes and str(y) in self.listeNumeroLignes:
+                if self.matrice.loc[chr(x), str(y)] is not None and self.matrice.loc[chr(x), str(y)].color != piece.color:
+                    coups.append((chr(x), str(y)))
+            x = ord(position[0]) - 1
+            y = int(position[1]) - 1
+            if chr(x) in self.listeLettreColonnes and str(y) in self.listeNumeroLignes:
+                if self.matrice.loc[chr(x), str(y)] is not None and self.matrice.loc[chr(x), str(y)].color != piece.color:
+                    coups.append((chr(x), str(y)))
+        
+        return coups
